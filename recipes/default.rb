@@ -5,14 +5,19 @@
 # Copyright (c) 2016 Jason Blalock, All Rights Reserved.
 include_recipe 'apt'
 
-apt_repository 'sublime-text-3' do
-  uri 'http://ppa.launchpad.net/webupd8team/sublime-text-3/ubuntu'
+apt_repository "sublime-text-#{node['sublime-text']['version']['generation']}" do
+  uri node['sublime-text']['repository']['uri']
   components ['main']
-  distribution 'trusty'
-  key 'EEA14886'
-  keyserver 'keyserver.ubuntu.com'
+  distribution node['sublime-text']['platform']['release']
+  key node['sublime-text']['repository']['key']
+  keyserver node['sublime-text']['repository']['keyserver']
   action :add
   deb_src true
 end
 
-package 'sublime-text-installer'
+case node['sublime-text']['version']['generation']
+when 2
+  package 'sublime-text'
+when 3
+  package 'sublime-text-installer'
+end
