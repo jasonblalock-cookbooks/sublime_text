@@ -15,6 +15,17 @@ apt_repository "sublime-text-#{node['sublime-text']['version']['generation']}" d
   deb_src true
 end
 
+# Adding icon folders to server versions
+%w{16x16 32x32 128x128 48x48 256x256}.each do |dir|
+  directory "/usr/share/icons/hicolor/#{dir}/apps" do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    recursive true
+    action :create
+  end
+end
+
 case node['sublime-text']['version']['generation']
 when 2
   package 'sublime-text'
